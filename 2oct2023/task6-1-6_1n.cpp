@@ -7,7 +7,7 @@ int main() {
     int n;
     cin >> n;
 
-    int a[n];
+    int a[100];
 
     cout << "Введите числа: ";
 

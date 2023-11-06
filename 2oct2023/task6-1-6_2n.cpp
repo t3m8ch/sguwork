@@ -7,7 +7,7 @@ int main() {
     int rows, cols;
     cin >> rows >> cols;
 
-    int arr[rows][cols];
+    int arr[5][5];
 
     for (int i = 0; i < rows; ++i) {
         cout << "Введите " << cols << " чисел для строки " << i << ": ";
