@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
   int getDamage() { return damage; }
   void setDamage(int damage) { this->damage = damage; }
 
-  void print(ostream &out) {
+  virtual void printInfo(ostream &out) const {
     out << "Unit: " << name << endl
         << "  health: " << health << endl
         << "  damage: " << damage << endl;
@@ -43,7 +44,7 @@ public:
   int getArmor() { return armor; }
   void setArmor(int armor) { this->armor = armor; }
 
-  void print(ostream &out) {
+  void printInfo(ostream &out) const {
     out << "Lancer: " << name << endl
         << "  health: " << health << endl
         << "  damage: " << damage << endl
@@ -56,38 +57,113 @@ private:
   int mana;
 
 public:
-  Mage() : Unit() {}
-  Mage(string name, int length, int damage, int mana)
-      : Unit(name, length, damage), mana(mana) {}
+  Mage() : Unit(), mana(50) {}
+  Mage(string name, int health, int damage, int mana)
+      : Unit(name, health, damage), mana(mana) {}
   
   int getMana() { return mana; }
   void setMana(int mana) { this->mana = mana; }
 
-  void print(ostream &out) {
-    out << "Lancer: " << name << endl
+  void printInfo(ostream &out) const {
+    out << "Mage: " << name << endl
         << "  health: " << health << endl
         << "  damage: " << damage << endl
         << "  mana: " << mana << endl;
   }
 
-  bool operator==(Mage mage) {
+  bool operator==(const Mage& mage) {
     return mana == mage.mana;
   }
 
-  bool operator!=(Mage mage) {
+  bool operator!=(const Mage& mage) {
     return mana != mage.mana;
   }
 
-  bool operator>(Mage mage) {
+  bool operator>(const Mage& mage) {
     return mana > mage.mana;
   }
 
-  bool operator<(Mage mage) {
+  bool operator<(const Mage& mage) {
     return mana < mage.mana;
+  }
+
+  bool canWin(const Mage& mage) {
+    return *this > mage;
   }
 };
 
+class TopOfMages {
+private:
+  vector<Mage*> mages;
+
+  void sortMages() {
+    sort(mages.begin(), mages.end(), [](Mage* mage1, Mage* mage2) { 
+      return *mage1 > *mage2; 
+    });
+  }
+public:
+  TopOfMages() {}
+  
+  TopOfMages(vector<Mage*> mages) {
+    this->mages = mages;
+    sortMages();
+  }
+
+  void add(Mage* mage) {
+    mages.push_back(mage);
+    sortMages();
+  }
+
+  const vector<Mage*>& get() {
+    return mages;
+  }
+
+  void print(ostream& out) {
+    out << "TOP OF MAGES:" << endl;
+    for (Mage* mage : mages) {
+      mage->printInfo(out);
+    }
+  }
+};
+
+
 int main() {
+  vector<Unit*> units = {
+    new Unit("Petr", 1000, 100),
+    new Unit("Vasya", 500, 250),
+    new Lancer("Argon300", 2000, 35, 500),
+    new Mage("damager2005", 450, 300, 100),
+  };
+
+  for (Unit* unit : units) {
+    unit->printInfo(cout);
+  }
+
+  cout << endl;
+
+  TopOfMages* topOfMages = new TopOfMages({
+    new Mage(),
+    new Mage("Maga2.1", 100, 100, 350),
+    new Mage("Maga2.2", 150, 150, 350),
+    new Mage("Maga3", 100, 100, 10),
+    new Mage("Maga4", 100, 100, 75),
+  });
+
+  topOfMages->print(cout);
+
+  cout << endl;
+
+  Mage* mage1 = topOfMages->get()[0];
+  Mage* mage2 = topOfMages->get()[1];
+  Mage* mage3 = topOfMages->get()[3];
+
+  cout << (mage1->canWin(*mage2) ? "mage1 can win mage2" : "mage1 can't win mage2") << endl;
+  cout << (mage1->canWin(*mage3) ? "mage1 can win mage3" : "mage1 can't win mage3") << endl;
+
+  cout << endl;
+
+  topOfMages->add(new Mage("Imba", 10000, 10000, 10000));
+  topOfMages->print(cout);
 
   return 0;
 }
