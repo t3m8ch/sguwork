@@ -14,16 +14,15 @@ int main() {
 
   while (in >> n) {
     q.push(n);
-    if (n == x) {
-      q.push(y);
-    }
   }
-
   in.close();
 
   ofstream out("output_queue.txt");
   while (!q.empty()) {
     out << q.front() << ' ';
+    if (q.front() == x) {
+      out << y << ' ';
+    }
     q.pop();
   }
   out << endl;

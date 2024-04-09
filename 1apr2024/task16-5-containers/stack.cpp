@@ -1,5 +1,6 @@
 #include <fstream>
 #include <stack>
+#include <iostream>
 
 using namespace std;
 
@@ -14,17 +15,23 @@ int main() {
 
   while (in >> n) {
     st.push(n);
-    if (n == x) {
-      st.push(y);
+  }
+
+  stack<int> st2;
+  while (!st.empty()) {
+    if (st.top() == x) {
+      st2.push(y);
     }
+    st2.push(st.top());
+    st.pop();
   }
 
   in.close();
 
   ofstream out("output_stack.txt");
-  while (!st.empty()) {
-    out << st.top() << ' ';
-    st.pop();
+  while (!st2.empty()) {
+    out << st2.top() << ' ';
+    st2.pop();
   }
   out << endl;
 

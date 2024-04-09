@@ -3,16 +3,27 @@
 
 using namespace std;
 
-class Stack {
+class StackException {
+private:
+  string str;
+
+public:
+  StackException(string message) : str(message) {}
+  string what() {
+    return str;
+  }
+};
+
+template <class Item> class Stack {
 private:
   struct Element {
-    string inf;
+    Item inf;
     Element* next;
-
-    Element(string inf, Element* next) : inf(inf), next(next) {}
+    Element(Item inf, Element* next) : inf(inf), next(next) {}
   };
 
   Element* head;
+  unsigned count = 0;
 
 public:
   Stack() : head(0) {}
@@ -21,25 +32,35 @@ public:
     return head == 0;
   }
   
-  string pop() {
+  Item pop() {
     if (isEmpty()) {
-      return "";
+      throw StackException("Stack is empty");
     }
 
     Element* r = head;
-    string i = r->inf;
+    Item i = r->inf;
     head = r->next;
 
     delete r;
+    count--;
     return i;
   }
 
   void push(string data) {
     head = new Element(data, head);
+    count++;
   }
 
-  string getTop() {
+  Item getTop() {
+    if (isEmpty()) {
+      throw StackException("Stack is empty");
+    }
+
     return isEmpty() ? "" : head->inf;
+  }
+
+  unsigned getCount() {
+    return count;
   }
 };
 
@@ -50,18 +71,25 @@ int main() {
   in >> l;
 
   string word;
-  Stack stack;
+  Stack<string> stack1;
   while (in >> word) {
-    if (word[0] == l) {
-      stack.push(word);
-    }
+    stack1.push(word);
   }
 
   in.close();
 
+  Stack<string> stack2;
+  while (!stack1.isEmpty()) {
+    string w = stack1.pop();
+    if (w[0] == l) {
+      stack2.push(w);
+    }
+  }
+
   ofstream out("output_stack.txt");
-  while (!stack.isEmpty()) {
-    out << stack.pop() << ' ';
+  out << stack2.getCount() << endl;
+  while (!stack2.isEmpty()) {
+    out << stack2.pop() << ' ';
   }
   out << endl;
 

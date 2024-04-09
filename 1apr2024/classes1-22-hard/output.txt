@@ -1,0 +1,4 @@
+Event(name="A Event 2", organizer=Organizer(name="Вторая компания", address="ул. Столыпина", phone="+7 800 000-00-00"), dateTime="2023-01-01 00:00", cost=2000)
+Event(name="Event", organizer=Organizer(name="Компания", address="ул. Пушкина", phone="+7 999 999-99-99"), dateTime="2024-01-01 00:00", cost=1000)
+Event(name="Event 4", organizer=Organizer(name="Вторая компания", address="ул. Столыпина", phone="+7 800 000-00-00"), dateTime="2024-01-02 00:00", cost=2000)
+Event(name="Event 3", organizer=Organizer(name="Вторая компания", address="ул. Столыпина", phone="+7 800 000-00-00"), dateTime="2024-02-01 00:00", cost=2000)
