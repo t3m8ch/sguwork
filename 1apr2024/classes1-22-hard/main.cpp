@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <map>
 
 using namespace std;
 
@@ -38,6 +39,14 @@ private:
 public:
   DateTime(int _year, int _month, int _day, int _hour, int _minute)
       : year(_year), month(_month), day(_day), hour(_hour), minute(_minute) {}
+  
+  DateTime(string s) {
+    setYear(stoi(s.substr(0, 4)));
+    setMonth(stoi(s.substr(5, 2)));
+    setDay(stoi(s.substr(8, 2)));
+    setHour(stoi(s.substr(11, 2)));
+    setMinute(stoi(s.substr(14, 2)));
+  }
 
   bool operator==(DateTime dateTime) {
     return year == dateTime.year && month == dateTime.month &&
@@ -160,13 +169,106 @@ public:
 int Event::objectsCount = 0;
 
 // Компоратор
-bool comp(const Event& a, Event& b) {
+bool comp(const Event& a, const Event& b) {
     return a.getDateTime() < b.getDateTime() ||
            (a.getDateTime() == b.getDateTime() && a.getName() < b.getName());
 }
 
+void leftTrim(string& s) {
+  s.erase(
+    s.begin(), 
+    find_if(s.begin(), s.end(), [](unsigned char ch) { 
+      return !isspace(ch); 
+    })
+  );
+}
+
+void rightTrim(string& s) {
+  s.erase(
+    find_if(s.rbegin(), s.rend(), [](unsigned char ch) { 
+      return !isspace(ch); 
+    }).base(),
+    s.end()
+  );
+}
+
+void strToLowerCase(string& s) {
+  transform(s.begin(), s.end(), s.begin(), [](unsigned char ch) {
+    return tolower(ch);
+  });
+}
+
+class CannotReadEvent {};
+
+class EventReader {
+private:
+  istream& in;
+  bool eventIsRead = false;
+  string currentLine;
+  map<string, string> fields;
+
+  void preprocessCurrentLine() {
+    leftTrim(currentLine);
+    rightTrim(currentLine);
+    strToLowerCase(currentLine);
+  }
+
+  Event createEventFromMap() {
+    DateTime dateTime(fields["datetime"]);
+    Organizer organizer(
+      fields["organizer.name"],
+      fields["organizer.address"],
+      fields["organizer.phone"]
+    );
+    return Event(fields["name"], organizer, dateTime, stod(fields["cost"]));
+  }
+
+  void parseFieldToMap() {
+    string::iterator eq = find(currentLine.begin(), currentLine.end(), '=');
+    string key(currentLine.begin(), eq);
+    string value(eq + 1, currentLine.end());
+    fields[key] = value;
+  }
+public:
+  EventReader(istream& in) : in(in) {}
+  Event readEvent() {
+    while (getline(in, currentLine)) {
+      preprocessCurrentLine();
+
+      if (currentLine == "{") {
+        eventIsRead = true;
+        continue;
+      }
+
+      if (currentLine == "}") {
+        eventIsRead = false;
+        return createEventFromMap(); 
+      }
+
+      if (!eventIsRead || currentLine == "") {
+        continue;
+      }
+
+      parseFieldToMap();
+    }
+
+    throw CannotReadEvent();
+  }
+};
+
 int main() {
   vector<Event> events;
+
+  ifstream in("input.txt");
+  EventReader eventReader(in);
+
+  while (true) {
+    try {
+      events.push_back(eventReader.readEvent());
+    } catch (CannotReadEvent) {
+      break;
+    }
+  }
 
   // Сортировка с использованием компоратора
   sort(events.begin(), events.end(), comp);

@@ -1,23 +1,26 @@
-name=ААА Хакатон
-organizer=
-  name=Студенческие клубы разработки СГУ
-  address=Вольская 10А
-  phone=+7 999 666-33-33
-datetime=2020.22.12 13:20
-cost=0
+{
+  name=ААА Хакатон
+  organizer.name=Студенческие клубы разработки СГУ
+  organizer.address=Вольская 10А
+  organizer.phone=+7 999 666-33-33
+  datetime=2020.22.12 13:20
+  cost=0
+}
 
-name=Лекция по Linux
-organizer=
-  name=ООО "Базальт СПО"
-  address=ул. Октябрьская 44а
-  phone=+7 495 123-47-99
-datetime=2020.22.12 13:20
-cost=1000
+{
+  name=Лекция по Linux
+  organizer.name=ООО "Базальт СПО"
+  organizer.address=ул. Октябрьская 44а
+  organizer.phone=+7 495 123-47-99
+  datetime=2020.22.12 13:20
+  cost=1000
+}
 
-name=Большой хакатон
-organizer=
-  name=Яндекс
-  address=ул. Пушкина д. 999
-  phone=+7 999 999-99-99
-datetime=2023.01.01 10:00
-cost=0
+{
+  name=Большой хакатон
+  organizer.name=Яндекс
+  organizer.address=ул. Пушкина д. 999
+  organizer.phone=+7 999 999-99-99
+  datetime=2023.01.01 10:00
+  cost=0
+}
