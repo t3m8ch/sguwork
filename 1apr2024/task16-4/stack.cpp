@@ -46,7 +46,7 @@ public:
     return i;
   }
 
-  void push(string data) {
+  void push(Item data) {
     head = new Element(data, head);
     count++;
   }
@@ -56,7 +56,7 @@ public:
       throw StackException("Stack is empty");
     }
 
-    return isEmpty() ? "" : head->inf;
+    return head->inf;
   }
 
   unsigned getCount() {
