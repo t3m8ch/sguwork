@@ -19,10 +19,7 @@ int main() {
 
   int numbers[3];
 
-  in >> numbers[0];
-  in >> numbers[1];
-
-  while (in >> numbers[2]) {
+  while (in >> numbers[0] >> numbers[1] >> numbers[2]) {
     set<int> digitsOfNumbers[3];
     set<int> allDigits;
 
@@ -45,9 +42,6 @@ int main() {
       }
     }
     out << endl;
-
-    numbers[0] = numbers[1];
-    numbers[1] = numbers[2];
   }
 
   in.close();

@@ -12,15 +12,15 @@ int main() {
   ifstream in("input.txt");
   while (getline(in, word)) {
     lastLineLetters.clear();
-    for (char l : word) {
-      if (!isalpha(l)) {
+    for (char lt : word) {
+      if (!isalpha(lt)) {
         continue;
       }
 
-      if (letters.count(l) == 0) {
-        lastLineLetters.insert(l);
+      if (letters.count(lt) == 0) {
+        lastLineLetters.insert(lt);
       }
-      letters.insert(l);
+      letters.insert(lt);
     }
   }
   in.close();
