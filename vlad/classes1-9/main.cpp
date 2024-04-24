@@ -126,12 +126,30 @@ public:
 };
 
 int main() {
+
+	setlocale(LC_ALL, "Russian");
+
   Song smells_like_teen_spirit("Nirvana", Person("Kurt", "Cobain"), Person("Kurt", "Cobain"), 
-  "With the ligths out, it's less dangerous");
+  "With the ligths out, it's more dangerous");
   Song song_without_words("Кино", Person("Юрий", "Каспарян"), Person("Виктор","Цой"),
   "Песня без слов, ночь без сна. Все в свое время - зима и весна." );
-  Song feeling_of_guity("Электромания", Person("Арсений", "Перцов"), Person("Владислав","Беляев"),
+  Song feeling_of_guilty("Электромания", Person("Арсений", "Перцов"), Person("Владислав","Беляев"),
   "Делать от сердца, сгорая внутри. Это чувство моей вины, чувство моей вины!" );
+  Song sky_is_my_roof("Электромания", Person("Арсений", "Перцов"), Person("Владислав","Беляев"),
+  "Небо крыша моя, ждет меня ДЛИННЫЙ путь. Я не венусь нахад пока не найду себя.");
+  Song february("Электромания", Person("Арсений", "Перцов"), Person("Владислав","Беляев"),
+  "Я поломаю шоколад, я выкину зефир. Меня достали песни о любви");
+
+  
+  cout << (smells_like_teen_spirit > song_without_words) << "  " << (smells_like_teen_spirit < song_without_words) << "\n";
+  cout << (sky_is_my_roof == feeling_of_guilty) << "\n";
+
+  cout << "------------------------------------" << "\n";
+
+  cout << sky_is_my_roof.get_lyrics() << "\n";
+  sky_is_my_roof.set_lyrics("Небо крыша моя, ждет меня ДОЛГИЙ путь. Я не венусь нахад пока не найду себя.");
+  cout << sky_is_my_roof.get_lyrics() << "\n";
+  system("pause");
 
   return 0;
 }
