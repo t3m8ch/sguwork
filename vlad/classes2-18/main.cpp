@@ -57,6 +57,8 @@ int main() {
 
   for (auto e : enemies) {
     e->printInfo();
+    e->attack();
+    cout << endl;
   }
 }
 
